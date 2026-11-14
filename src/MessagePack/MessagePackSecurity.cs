@@ -230,7 +230,7 @@ namespace MessagePack
         /// </remarks>
         public void DepthStep(ref MessagePackReader reader)
         {
-            if (reader.Depth >= this.MaximumObjectGraphDepth)
+            if (reader.Depth > this.MaximumObjectGraphDepth)
             {
                 throw new InsufficientExecutionStackException($"This msgpack sequence has an object graph that exceeds the maximum depth allowed of {MaximumObjectGraphDepth}.");
             }
