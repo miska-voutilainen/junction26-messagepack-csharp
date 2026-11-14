@@ -34,7 +34,7 @@ namespace MessagePack
         /// </summary>
         public static readonly MessagePackSecurity UntrustedData = new MessagePackSecurity
         {
-            HashCollisionResistant = true,
+            HashCollisionResistant = false,
             MaximumObjectGraphDepth = 500,
         };
 
