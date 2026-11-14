@@ -1005,6 +1005,7 @@ public class TypeCollector
                         if ((isIntKey && intKey == null) || (!isIntKey && stringKey == null))
                         {
                             this.reportDiagnostic?.Invoke(Diagnostic.Create(MsgPack00xMessagePackAnalyzer.DoNotMixStringAndIntKeys, item.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax().GetLocation()));
+                            continue; // The key kind does not match the other members; the diagnostic is reported, so skip this member.
                         }
                     }
 
@@ -1019,7 +1020,10 @@ public class TypeCollector
                         {
                             DeclaringType = GetDeclaringTypeIfColliding(item),
                         };
-                        intMembers.Add(member.IntKey, (member, item.Type));
+                        if (!intMembers.ContainsKey(member.IntKey))
+                        {
+                            intMembers.Add(member.IntKey, (member, item.Type));
+                        }
                     }
                     else if (stringKey is not null)
                     {
@@ -1032,7 +1036,10 @@ public class TypeCollector
                         {
                             DeclaringType = GetDeclaringTypeIfColliding(item),
                         };
-                        stringMembers.Add(member.StringKey, (member, item.Type));
+                        if (!stringMembers.ContainsKey(member.StringKey))
+                        {
+                            stringMembers.Add(member.StringKey, (member, item.Type));
+                        }
                     }
 
                     var messagePackFormatter = item.GetAttributes().FirstOrDefault(x => x.AttributeClass.ApproximatelyEqual(this.typeReferences.FormatterAttribute))?.ConstructorArguments[0];
@@ -1138,6 +1145,7 @@ public class TypeCollector
                         if ((isIntKey && intKey == null) || (!isIntKey && stringKey == null))
                         {
                             this.reportDiagnostic?.Invoke(Diagnostic.Create(MsgPack00xMessagePackAnalyzer.DoNotMixStringAndIntKeys, item.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax().GetLocation()));
+                            continue; // The key kind does not match the other members; the diagnostic is reported, so skip this member.
                         }
                     }
 
@@ -1152,7 +1160,10 @@ public class TypeCollector
                         {
                             DeclaringType = GetDeclaringTypeIfColliding(item),
                         };
-                        intMembers.Add(member.IntKey, (member, item.Type));
+                        if (!intMembers.ContainsKey(member.IntKey))
+                        {
+                            intMembers.Add(member.IntKey, (member, item.Type));
+                        }
                     }
                     else
                     {
@@ -1165,7 +1176,10 @@ public class TypeCollector
                         {
                             DeclaringType = GetDeclaringTypeIfColliding(item),
                         };
-                        stringMembers.Add(member.StringKey, (member, item.Type));
+                        if (!stringMembers.ContainsKey(member.StringKey))
+                        {
+                            stringMembers.Add(member.StringKey, (member, item.Type));
+                        }
                     }
 
                     var messagePackFormatter = item.GetAttributes().FirstOrDefault(x => x.AttributeClass.ApproximatelyEqual(this.typeReferences.FormatterAttribute))?.ConstructorArguments[0];
@@ -1181,7 +1195,7 @@ public class TypeCollector
 
         // If we discovered midway through that we should be reporting diagnostics for non-public members,
         // report the ones we missed along the way.
-        if ((nonPublicMembersAreSerialized || allowPrivateAttribute is true) && this.reportDiagnostic is not null)
+        if ((nonPublicMembersAreSerialized && allowPrivateAttribute is true) && this.reportDiagnostic is not null)
         {
             foreach (Diagnostic deferred in deferredDiagnosticsForNonPublicMembers)
             {
