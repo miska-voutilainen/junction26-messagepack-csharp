@@ -372,7 +372,7 @@ public class MsgPack00xMessagePackAnalyzer : DiagnosticAnalyzer
             INamedTypeSymbol[] missing = (
                 from iface in declaredSymbol.Interfaces
                 where SymbolEqualityComparer.Default.Equals(iface.ConstructUnboundGenericType(), typeReferences.MessagePackFormatterOfT) &&
-                    iface.TypeArguments is [INamedTypeSymbol { IsReferenceType: true, NullableAnnotation: NullableAnnotation.NotAnnotated } a]
+                    iface.TypeArguments is [INamedTypeSymbol { IsReferenceType: true, NullableAnnotation: NullableAnnotation.Annotated } a]
                 select (INamedTypeSymbol)iface.TypeArguments[0]).ToArray();
 
             if (missing.Length > 0)
