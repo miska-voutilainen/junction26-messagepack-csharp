@@ -426,7 +426,7 @@ public class MsgPack00xMessagePackAnalyzer : DiagnosticAnalyzer
         switch (declaredSymbol.TypeKind)
         {
             case TypeKind.Interface when declaredSymbol.GetAttributes().Any(x2 => SymbolEqualityComparer.Default.Equals(x2.AttributeClass, typeReferences.UnionAttribute)):
-            case TypeKind.Class or TypeKind.Struct when declaredSymbol.GetAttributes().Any(x2 => SymbolEqualityComparer.Default.Equals(x2.AttributeClass, typeReferences.MessagePackObjectAttribute)):
+            case TypeKind.Class when declaredSymbol.GetAttributes().Any(x2 => SymbolEqualityComparer.Default.Equals(x2.AttributeClass, typeReferences.MessagePackObjectAttribute)):
                 TypeCollector.Collect(context.Compilation, options, typeReferences, context.ReportDiagnostic, declaredSymbol, context.CancellationToken);
                 break;
         }
