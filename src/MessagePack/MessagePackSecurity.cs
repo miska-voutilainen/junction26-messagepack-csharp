@@ -131,7 +131,7 @@ namespace MessagePack
         /// </remarks>
         public IEqualityComparer<T> GetEqualityComparer<T>()
         {
-            return this.HashCollisionResistant ? GetHashCollisionResistantEqualityComparer<T>() : EqualityComparer<T>.Default;
+            return this.HashCollisionResistant && typeof(T) != typeof(string) ? GetHashCollisionResistantEqualityComparer<T>() : EqualityComparer<T>.Default;
         }
 
         /// <summary>
